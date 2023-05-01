@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Table</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#myTable").DataTable({
+          lengthMenu: [
+            [
+              5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
+              90, 95, 100,
+            ],
+            [
+              5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
+              90, 95, 100,
+            ],
+          ],
+          paging: true,
+          ordering: true,
+          stateSave: true,
+          pagingType: "simple_numbers",
+          // scrollY: "300px",
+          scrollCollapse: true,
+          processing: true,
+          serverside: true,
+
+          columns: [
+            { data: "id" },
+            { data: "firstName" },
+            { data: "age" },
+            { data: "contactNumber" },
+            { data: "Tasks[].title" },
+          ],
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <table id="myTable" class="hover stripe row-borders order-column">
+        <thead>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Age</th>
+          <th>Contact Number</th>
+          <th>Tasks Description</th>
+        </thead>
+      </table>
+    </div>
+
+    <script>
+      async function fetchData() {
+        var ans = await fetch(`http://localhost:8080/one-to-many-read`);
+        const data = await ans.json();
+        console.log(data);
+        var table1 = $("#myTable").DataTable();
+
+        table1.rows.add(data).draw();
+        // table1.rows.add(...x);
+        // table1.draw();
+        // console.log(table1);
+
+        // let tr;
+        // let table = document.getElementById("tbody");
+        // let wholeTable = document.getElementById('myTable');
+        // console.log(wholeTable);
+
+        // console.log(table);
+
+        // for (i = 0; i < data.length; i++) {
+        //   let title = "<ul>";
+        //   data[i].Tasks.forEach((element) => {
+        //     title += `<li>${element.title}</li>`;
+        //   });
+        //   title += `</ul>`;
+        //   console.log(title);
+
+        //   table.innerHTML += `<tr class="odd">
+        // <td>${data[i].id}</td>
+        // <td>${data[i].firstName}</td>
+        // <td>${data[i].age}</td>
+        // <td>${data[i].contactNumber}</td>
+        // <td>${title}</td>
+        // </tr>`;
+        //   title = "";
+        // }
+      }
+      fetchData();
+    </script>
+  </body>
+</html>

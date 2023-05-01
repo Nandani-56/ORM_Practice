@@ -5,6 +5,8 @@ const studentRoute = require("../controllers/studentController");
 // API to get all data
 route.get("/displayStudentData", studentRoute.displayData);
 
+route.get("/display", studentRoute.render);
+
 // API to insert data
 route.post("/insertStudentData", studentRoute.insert);
 

@@ -9,14 +9,15 @@ const model = require("../models");
 const oneToManyRead = async (req, res) => {
   try {
     let data = await model.Student.findAll({
-      attributes: ["firstName", "age", "contactNumber"],
+      attributes: ["firstName", "age", "contactNumber", "id"],
       include: {
         model: model.Task,
         required: true,
         attributes: ["title"],
       },
     });
-
+    // console.log(data[0].Tasks);
+    // res.render("datatable.ejs",{data:data})
     res.json(data);
   } catch (err) {
     console.log(err);
@@ -27,13 +28,17 @@ const oneToManyRead = async (req, res) => {
 // API to insert data in one-to-many relationship
 const oneToManyInsert = async (req, res) => {
   try {
-    await model.Task.scope("userIdScope").bulkCreate(req.body);
+    await model.Task.create({
+      ...req.body,
+      userId : req.params.id
+    });
     res.json("Inserted!");
   } catch (err) {
     console.log(err);
     res.json("err");
   }
 };
+
 
 // API tp update data in one-to-many relationship
 const oneToManyUpdate = async (req, res) => {

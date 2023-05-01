@@ -5,11 +5,16 @@ app.use(express.urlencoded({ extended: true }));
 const { Op, or, and } = require("sequelize");
 const model = require("../models");
 
+const render = async (req, res) => {
+  res.render("datatable.ejs");
+};
+
 // API to get all the records
 const displayData = async (req, res) => {
   try {
     let studentData = await model.Student.findAll({});
-    res.status(200).json(studentData);
+    return res.json(studentData);
+    // res.render("datatable.ejs",{data:studentData});
   } catch (err) {
     console.log(err);
     res.status(404).json("Some error occured!");
@@ -363,8 +368,6 @@ const restoreData = async function (req, res) {
   }
 };
 
-
-
 module.exports = {
   displayData,
   sorting,
@@ -376,4 +379,5 @@ module.exports = {
   restoreData,
   paginationUsingCount,
   paginationSearchSort,
+  render,
 };
