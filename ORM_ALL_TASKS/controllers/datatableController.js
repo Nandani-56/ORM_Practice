@@ -10,7 +10,7 @@ const render = async (req, res) => {
   res.render("datatable.ejs");
 };
 
-// Pagination sorting searching
+// Pagination , sorting , searching , All Records
 const getData = async (req, res) => {
   try {
     console.log(req.query);
@@ -19,7 +19,16 @@ const getData = async (req, res) => {
     var column_index = req.query.order[0].column;
     var sortBy = req.query.columns[column_index]["data"];
     var order = req.query.order[0]["dir"];
+
     console.log(sortBy.split(".")[0]);
+
+    let sort_order;
+
+    if (sortBy.split(".")[0] == "Student") {
+      sort_order = [["Student", sortBy.split(".")[1], order]];
+    } else {
+      sort_order = [[sortBy, order]];
+    }
 
     // pagination
     const limit = Number(req.query.length);
@@ -29,6 +38,7 @@ const getData = async (req, res) => {
     const search = req.query.search["value"];
     const where = {};
 
+    // "$Student.firstName$" --> This syntax is used to search in the child table
     if (search) {
       where[Op.or] = [
         {
@@ -59,13 +69,6 @@ const getData = async (req, res) => {
       ];
     }
 
-    let sort_order;
-    if (sortBy.split(".")[0] == "Student") {
-      sort_order = [["Student", sortBy.split(".")[1], order]];
-    } else {
-      sort_order = [[sortBy, order]];
-    }
-
     const { count, rows } = await model.Task.findAndCountAll({
       attributes: ["title"],
       limit: limit ? limit : null,
@@ -74,7 +77,6 @@ const getData = async (req, res) => {
       where: search ? where : null,
       include: {
         model: model.Student,
-        
         required: true,
         attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
       },

@@ -5,17 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Table</title>
+
+    <!-- dataTable Css Link -->
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
     />
+
+    <!-- JQuery link -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <!-- JQuery Datatable Link -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-   
+
+    <!-- Script for datatable function -->
     <script>
       $(document).ready(function () {
-        $("#myTable").DataTable({
-         
+        let t = $("#myTable").DataTable({
           lengthMenu: [
             [
               5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
@@ -32,8 +38,9 @@
           ajax: {
             url: "/getData",
           },
-          stateSave: true,
+          stateSave: true, //it will keep our webpage as it is even after refreshing the webpage
 
+          // Adds the data in the table
           columns: [
             { data: "Student.firstName" },
             { data: "Student.age" },
@@ -42,6 +49,9 @@
             { data: "title" },
           ],
         });
+
+        // To hide/show a particular column
+        t.column(0).visible(true);
       });
     </script>
   </head>
@@ -57,7 +67,7 @@
         </thead>
       </table>
     </div>
-
-    <script></script>
   </body>
 </html>
+
+
