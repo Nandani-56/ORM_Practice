@@ -1,11 +1,16 @@
 const express = require("express");
 const route = express.Router();
 const studentRoute = require("../controllers/studentController");
+const datatable = require("../controllers/datatableController");
 
 // API to get all data
 route.get("/displayStudentData", studentRoute.displayData);
 
-route.get("/display", studentRoute.render);
+// API to render table page
+route.get("/display", datatable.render);
+
+// API to get data in datatable page
+route.get("/getData", datatable.getData);
 
 // API to insert data
 route.post("/insertStudentData", studentRoute.insert);

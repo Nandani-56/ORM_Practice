@@ -5,10 +5,6 @@ app.use(express.urlencoded({ extended: true }));
 const { Op, or, and } = require("sequelize");
 const model = require("../models");
 
-const render = async (req, res) => {
-  res.render("datatable.ejs");
-};
-
 // API to get all the records
 const displayData = async (req, res) => {
   try {
@@ -76,7 +72,7 @@ const paginationSearchSort = async (req, res) => {
         let limit = 10;
         let offset = (pageno - 1) * limit || 0;
         console.log(offset);
-        let data = await model.Student.findAll({
+        let pagination_data = await model.Student.findAll({
           raw: true,
           limit: limit,
           offset: (pageno - 1) * limit || 0,
@@ -102,82 +98,42 @@ const paginationSearchSort = async (req, res) => {
       let contactNumber = req.query.contactNumber || "";
       let operator = req.query.operator || "and";
 
-      if (operator == "or") {
-        try {
-          let searchedData = await model.Student.findAll({
-            where: {
-              [Op.or]: [
-                {
-                  firstName: {
-                    [Op.like]: `${fname}`,
-                  },
+      try {
+        let searchedData = await model.Student.findAll({
+          where: {
+            [Op.and]: [
+              {
+                firstName: {
+                  [Op.like]: `%${fname}%`,
                 },
-                {
-                  lastName: {
-                    [Op.like]: `${lname}`,
-                  },
+              },
+              {
+                lastName: {
+                  [Op.like]: `%${lname}%`,
                 },
-                {
-                  age: {
-                    [Op.like]: `${age}`,
-                  },
+              },
+              {
+                age: {
+                  [Op.like]: `%${age}%`,
                 },
-                {
-                  contactNumber: {
-                    [Op.like]: `${contactNumber}`,
-                  },
+              },
+              {
+                contactNumber: {
+                  [Op.like]: `%${contactNumber}%`,
                 },
-              ],
-            },
-          });
+              },
+            ],
+          },
+        });
 
-          if (searchedData.length > 0) {
-            res.json(searchedData);
-          } else {
-            res.json("OOPS no data found!");
-          }
-        } catch (err) {
-          console.log(err);
-          res.json("ERRR");
+        if (searchedData.length > 0) {
+          res.json(searchedData);
+        } else {
+          res.json("OOPS no data found!");
         }
-      } else {
-        try {
-          let searchedData = await model.Student.findAll({
-            where: {
-              [Op.and]: [
-                {
-                  firstName: {
-                    [Op.like]: `%${fname}%`,
-                  },
-                },
-                {
-                  lastName: {
-                    [Op.like]: `%${lname}%`,
-                  },
-                },
-                {
-                  age: {
-                    [Op.like]: `%${age}%`,
-                  },
-                },
-                {
-                  contactNumber: {
-                    [Op.like]: `%${contactNumber}%`,
-                  },
-                },
-              ],
-            },
-          });
-
-          if (searchedData.length > 0) {
-            res.json(searchedData);
-          } else {
-            res.json("OOPS no data found!");
-          }
-        } catch (err) {
-          console.log(err);
-          res.json("ERRR");
-        }
+      } catch (err) {
+        console.log(err);
+        res.json("ERRR");
       }
     }
 
@@ -379,5 +335,4 @@ module.exports = {
   restoreData,
   paginationUsingCount,
   paginationSearchSort,
-  render,
 };

@@ -5,6 +5,8 @@ app.use(express.urlencoded({ extended: true }));
 const { Op, or, and } = require("sequelize");
 const model = require("../models");
 
+
+
 // API to fetch data in one-to-many relationship
 const oneToManyRead = async (req, res) => {
   try {
@@ -90,3 +92,11 @@ module.exports = {
   oneToManyUpdate,
   oneToManyDelete,
 };
+
+
+
+
+
+
+
+
