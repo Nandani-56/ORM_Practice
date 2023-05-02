@@ -32,29 +32,34 @@ const getData = async (req, res) => {
     if (search) {
       where[Op.or] = [
         {
-          firstName: {
+          "$Student.firstName$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          lastName: {
+          "$Student.lastName$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          age: {
+          "$Student.age$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          contactNumber: {
+          "$Student.contactNumber$": {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        {
+          title: {
             [Op.like]: `%${search}%`,
           },
         },
       ];
     }
 
-    var sort_order;
+    let sort_order;
     if (sortBy.split(".")[0] == "Student") {
       sort_order = [["Student", sortBy.split(".")[1], order]];
     } else {
@@ -66,11 +71,10 @@ const getData = async (req, res) => {
       limit: limit ? limit : null,
       offset: start ? start : null,
       order: sort_order,
-
+      where: search ? where : null,
       include: {
         model: model.Student,
-        where: search ? where : null,
-
+        
         required: true,
         attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
       },
