@@ -30,13 +30,14 @@
           ajax: {
             url: "/getData",
           },
+          stateSave: true,
 
           columns: [
-            { data: "id" },
-            { data: "firstName" },
-            { data: "age" },
-            { data: "contactNumber" },
-            { data: "Tasks[].title" },
+            { data: "Student.firstName" },
+            { data: "Student.age" },
+            { data: "Student.contactNumber" },
+            { data: "Student.id" },
+            { data: "title" },
           ],
         });
       });
@@ -44,12 +45,12 @@
   </head>
   <body>
     <div>
-      <table id="myTable" class="hover stripe row-borders order-column">
+      <table id="myTable" class="hover stripe row-borders order-column display">
         <thead>
-          <th>Id</th>
           <th>First Name</th>
           <th>Age</th>
           <th>Contact Number</th>
+          <th>Student Id</th>
           <th>Tasks Description</th>
         </thead>
       </table>

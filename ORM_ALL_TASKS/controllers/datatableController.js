@@ -19,6 +19,7 @@ const getData = async (req, res) => {
     var column_index = req.query.order[0].column;
     var sortBy = req.query.columns[column_index]["data"];
     var order = req.query.order[0]["dir"];
+    console.log(sortBy.split(".")[0]);
 
     // pagination
     const limit = Number(req.query.length);
@@ -53,19 +54,25 @@ const getData = async (req, res) => {
       ];
     }
 
-    console.log(where, "where");
+    var sort_order;
+    if (sortBy.split(".")[0] == "Student") {
+      sort_order = [["Student", sortBy.split(".")[1], order]];
+    } else {
+      sort_order = [[sortBy, order]];
+    }
 
-    const { count, rows } = await model.Student.findAndCountAll({
-      where: search ? where : null,
-      distinct: true,
-      attributes: ["firstName", "age", "contactNumber", "id"],
+    const { count, rows } = await model.Task.findAndCountAll({
+      attributes: ["title"],
       limit: limit ? limit : null,
       offset: start ? start : null,
-      order: [[sortBy, order]],
+      order: sort_order,
+
       include: {
-        model: model.Task,
+        model: model.Student,
+        where: search ? where : null,
+
         required: true,
-        attributes: ["title"],
+        attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
       },
     });
 
@@ -74,7 +81,6 @@ const getData = async (req, res) => {
 
     // To return count of total rows
     const totalCount = await model.Student.count({
-      distinct: true,
       include: {
         model: model.Task,
         required: true,

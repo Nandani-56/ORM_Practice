@@ -10,12 +10,12 @@ const model = require("../models");
 // API to fetch data in one-to-many relationship
 const oneToManyRead = async (req, res) => {
   try {
-    let data = await model.Student.findAll({
-      attributes: ["firstName", "age", "contactNumber", "id"],
+    let data = await model.Task.findAll({
+      // attributes: ["firstName", "age", "contactNumber", "id","lastName"],
       include: {
-        model: model.Task,
-        required: true,
-        attributes: ["title"],
+        model: model.Student,
+        // required: true,
+        // attributes: ["title"],
       },
     });
     // console.log(data[0].Tasks);
