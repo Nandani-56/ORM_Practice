@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "actor",
       paranoid: true,
       timestamps: true,
+      hooks: {
+        beforeCreate: async (data) => {
+          console.log("before create actor");
+          if (data.actorName == "Raghav" || data.actorName == "Varun") {
+            await actor.update({ where: {} });
+          }
+        },
+      },
     }
   );
 

@@ -11,8 +11,7 @@ const image = db.image;
 const video = db.video;
 const comment = db.comment;
 
-
-// API to insert data into images table
+// API to insert data into images table 
 const polymorphicInsert = async (req, res) => {
   if (req.params.modelName == "image") {
     try {
@@ -38,7 +37,7 @@ const polymorphicInsert = async (req, res) => {
 // API to insert comment
 const insertComment = async (req, res) => {
   try {
-    await model.comment.create({
+    await comment.create({
       commentableId: req.params.id,
       commentableType: req.params.type,
       title: req.body.title,
@@ -54,10 +53,10 @@ const insertComment = async (req, res) => {
 const readComment = async (req, res) => {
   if (req.params.readComment == "video") {
     try {
-      let data = await model.video.findAll({
+      let data = await video.findAll({
         include: [
           {
-            model: model.comment,
+            model: comment,
             attributes: ["title"],
           },
         ],
@@ -71,10 +70,10 @@ const readComment = async (req, res) => {
 
   if (req.params.readComment == "image") {
     try {
-      let data = await model.image.findAll({
+      let data = await image.findAll({
         include: [
           {
-            model: model.comment,
+            model: comment,
             attributes: ["title"],
           },
         ],
@@ -90,14 +89,14 @@ const readComment = async (req, res) => {
 const polymorphicDelete = async (req, res) => {
   if (req.params.deleteData == "image") {
     try {
-      await model.image
+      await image
         .destroy({
           where: {
             id: req.params.id,
           },
         })
         .then(async () => {
-          await model.comment.destroy({
+          await comment.destroy({
             where: {
               commentableId: req.params.id,
               commentableType: "image",
@@ -114,14 +113,14 @@ const polymorphicDelete = async (req, res) => {
 
   if (req.params.deleteData == "video") {
     try {
-      await model.video
+      await video
         .destroy({
           where: {
             id: req.params.id,
           },
         })
         .then(async () => {
-          await model.comment.destroy({
+          await comment.destroy({
             where: {
               commentableId: req.params.id,
               commentableType: "video",
