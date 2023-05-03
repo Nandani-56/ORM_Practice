@@ -4,7 +4,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const { Op, or, and, QueryTypes } = require("sequelize");
 
-const model = require("../models");
+const db = require("../models");
+const actor = db.Actor;
+const movie = db.Movie;
 
 // Insert Data
 const manyToManyInsert = async (req, res) => {
@@ -44,29 +46,63 @@ const manyToManyInsert = async (req, res) => {
   }
 };
 
-// Read Data
-const actorMovieRead = async (req, res) => {
+// Insert data
+const insertData = async (req, res) => {
   try {
-    const data = await model.Movie_Actor.findAll({
-      attributes: [],
-      include: [
-        {
-          model: model.Movie,
-          attributes: ["movieName"],
-        },
-        {
-          model: model.Actor,
-          attributes: ["actorName"],
-        },
-      ],
-      order: ["movieId"],
-    });
-    res.json(data);
+    await movie.create(
+      {
+        movieName: "ABCD",
+        actor: [
+          {
+            actorName: "Siddharth",
+          },
+          {
+            actorName: "Varun",
+          },
+        ],
+      },
+      {
+        include: [{model:actor}],
+      }
+    );
   } catch (err) {
     console.log(err);
-    res.json("err");
   }
 };
+
+// Read Data
+const actorMovieRead = async (req, res) => {
+  // try {
+  //   const data = await model.Movie_Actor.findAll({
+  //     attributes: [],
+  //     include: [
+  //       {
+  //         model: model.Movie,
+  //         attributes: ["movieName"],
+  //       },
+  //       {
+  //         model: model.Actor,
+  //         attributes: ["actorName"],
+  //       },
+  //     ],
+  //     order: ["movieId"],
+  //   });
+  //   res.json(data);
+  // } catch (err) {
+  //   console.log(err);
+  //   res.json("err");
+  // }
+
+  const result = await movie.findOne({
+    where: { movieName: 'Student of the Year' },
+    include: actor
+  });
+  res.json(result)
+};
+
+
+
+
 
 // delete
 const actorMovieDelete = async (req, res) => {
@@ -128,4 +164,5 @@ module.exports = {
   manyToManyInsert,
   actorMovieRead,
   actorMovieDelete,
+  insertData,
 };

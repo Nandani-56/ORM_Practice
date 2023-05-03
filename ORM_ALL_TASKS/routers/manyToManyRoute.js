@@ -6,6 +6,7 @@ const manyToManyRoute = require("../controllers/manyToManyController");
 // API to insert actor
 route.post("/insert/:modelName", manyToManyRoute.manyToManyInsert);
 
+route.post("/insert",manyToManyRoute.insertData);
 // API to read actormovie
 route.get("/actor-movie-read", manyToManyRoute.actorMovieRead);
 

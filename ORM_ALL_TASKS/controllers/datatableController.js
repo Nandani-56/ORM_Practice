@@ -38,6 +38,7 @@ const getData = async (req, res) => {
     const search = req.query.search["value"];
     const where = {};
 
+    
     // "$Student.firstName$" --> This syntax is used to search in the child table
     if (search) {
       where[Op.or] = [

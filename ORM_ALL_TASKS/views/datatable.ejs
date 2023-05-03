@@ -12,8 +12,11 @@
       href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
     />
 
-    <!-- JQuery link -->
+    <!-- JQuery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <!-- jQuery library -->
+    
 
     <!-- JQuery Datatable Link -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -21,7 +24,7 @@
     <!-- Script for datatable function -->
     <script>
       $(document).ready(function () {
-        let t = $("#myTable").DataTable({
+        let table = $("#myTable").DataTable({
           lengthMenu: [
             [
               5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
@@ -50,13 +53,33 @@
           ],
         });
 
+        $("#myTable tbody").on("click", "tr", function () {
+          if ($(this).hasClass("selected")) {
+            $(this).removeClass("selected");
+          } else {
+            table.$("tr.selected").removeClass("selected");
+            $(this).addClass("selected");
+          }
+        });
+
+        // let t = $('#myTable').DataTable();
+
+        $("#button").click(function() {
+       console.log(table.row($(this).parents('tr')));
+         table
+        .row( $(this).parents('tr') )
+        .remove()
+        .draw();
+        });
+
         // To hide/show a particular column
-        t.column(0).visible(true);
+        table.column(0).visible(true);
       });
     </script>
   </head>
   <body>
     <div>
+      <span style="border: 1px solid black" id="button">Delete selected row</span>
       <table id="myTable" class="hover stripe row-borders order-column display">
         <thead>
           <th>First Name</th>
@@ -69,5 +92,3 @@
     </div>
   </body>
 </html>
-
-
