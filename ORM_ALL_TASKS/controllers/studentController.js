@@ -1,16 +1,19 @@
 const express = require("express");
+const { Op, or, and } = require("sequelize");
+const db = require("../models");
+
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { Op, or, and } = require("sequelize");
-const model = require("../models");
+
+const student = db.student;
 
 // API to get all the records
 const displayData = async (req, res) => {
   try {
-    let studentData = await model.Student.findAll({});
+    let studentData = await student.findAll({});
     return res.json(studentData);
-    // res.render("datatable.ejs",{data:studentData});
   } catch (err) {
     console.log(err);
     res.status(404).json("Some error occured!");
@@ -20,7 +23,7 @@ const displayData = async (req, res) => {
 // API to insert data
 const insert = async (req, res) => {
   try {
-    await model.Student.create(req.body);
+    await student.create(req.body);
     res.status(200).json("inserted!");
   } catch (err) {
     console.log(err);
@@ -31,7 +34,7 @@ const insert = async (req, res) => {
 // API to delete data
 const deleteData = async (req, res) => {
   try {
-    await model.Student.destroy({
+    await student.destroy({
       where: {
         id: req.params.id,
       },
@@ -46,7 +49,7 @@ const deleteData = async (req, res) => {
 //API to update data
 const updateData = async (req, res) => {
   try {
-    await model.Student.update(req.body, {
+    await student.update(req.body, {
       where: {
         id: req.params.id,
       },
@@ -72,7 +75,7 @@ const paginationSearchSort = async (req, res) => {
         let limit = 10;
         let offset = (pageno - 1) * limit || 0;
         console.log(offset);
-        let pagination_data = await model.Student.findAll({
+        let pagination_data = await student.findAll({
           raw: true,
           limit: limit,
           offset: (pageno - 1) * limit || 0,
@@ -99,7 +102,7 @@ const paginationSearchSort = async (req, res) => {
       let operator = req.query.operator || "and";
 
       try {
-        let searchedData = await model.Student.findAll({
+        let searchedData = await student.findAll({
           where: {
             [Op.and]: [
               {
@@ -140,7 +143,7 @@ const paginationSearchSort = async (req, res) => {
     // sorting
     if (req.params.task == "sort") {
       try {
-        let sortedData = await model.Student.findAll({
+        let sortedData = await student.findAll({
           order: [[req.query.colName || "id", req.query.order || "ASC"]],
         });
         res.json(sortedData);
@@ -165,7 +168,7 @@ const pagination = async function (req, res) {
     let limit = 10;
     let offset = (pageno - 1) * limit || 0;
     console.log(offset);
-    let data = await model.Student.findAll({
+    let data = await student.findAll({
       raw: true,
       limit: limit,
       offset: (pageno - 1) * limit || 0,
@@ -190,7 +193,7 @@ const paginationUsingCount = async function (req, res) {
     let limit = 10;
     let offset = (pageno - 1) * limit || 0;
     console.log(offset);
-    const { count, rows } = await model.Student.findAndCountAll({
+    const { count, rows } = await student.findAndCountAll({
       raw: true,
       limit: limit,
       group: ["firstName"],
@@ -220,7 +223,7 @@ const search = async function (req, res) {
 
   if (operator == "or") {
     try {
-      let searchedData = await model.Student.findAll({
+      let searchedData = await student.findAll({
         where: {
           [Op.or]: [
             {
@@ -258,7 +261,7 @@ const search = async function (req, res) {
     }
   } else {
     try {
-      let searchedData = await model.Student.findAll({
+      let searchedData = await student.findAll({
         where: {
           [Op.and]: [
             {
@@ -300,7 +303,7 @@ const search = async function (req, res) {
 // API for sorting
 const sorting = async function (req, res) {
   try {
-    let sortedData = await model.Student.findAll({
+    let sortedData = await student.findAll({
       order: [[req.query.colName || "id", req.query.order || "ASC"]],
     });
     res.json(sortedData);
@@ -313,7 +316,7 @@ const sorting = async function (req, res) {
 // API for restoring the soft deleted fields
 const restoreData = async function (req, res) {
   try {
-    await model.Student.restore({
+    await student.restore({
       where: {
         id: req.params.id,
       },

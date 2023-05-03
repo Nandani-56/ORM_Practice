@@ -1,10 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Country extends Model {
+  class country extends Model {
     static associate(models) {
       // define association here
-      Country.hasOne(models.Capital,{
+      country.hasOne(models.capital,{
         foreignKey:'countryId',
         onDelete : 'CASCADE',
         onUpdate: "CASCADE",
@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  Country.init(
+  country.init(
     {
       countryName: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Country",
+      modelName: "country",
       // paranoid: true,
       timestamps: true,
       hooks:{
@@ -30,5 +30,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
-  return Country;
+  return country;
 };

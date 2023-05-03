@@ -3,22 +3,22 @@ const { Sequelize, Op } = require("sequelize");
 
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Actor extends Model {
+  class actor extends Model {
     static associate(models) {
-      Actor.belongsToMany(models.Movie, {
-        through: models.Movie_Actor,
+      actor.belongsToMany(models.movie, {
+        through: models.movie_actor,
         foreignKey: "actorId",
       });
     }
   }
-  Actor.init(
+  actor.init(
     {
       actorName: DataTypes.STRING,
     },
 
     {
       sequelize,
-      modelName: "Actor",
+      modelName: "actor",
       paranoid: true,
       timestamps: true,
     }
@@ -27,14 +27,14 @@ module.exports = (sequelize, DataTypes) => {
   //-------------------------Hooks practice -----------------------------
 
   // afterCreate hook
-  Actor.afterCreate(async (actor) => {
+  actor.afterCreate(async (actor) => {
     console.log("New Actor Created");
     console.log(actor.actorName);
   });
 
-  Actor.beforeCreate(async () => {
+  actor.beforeCreate(async () => {
     console.log("Creating Actorr");
   });
 
-  return Actor;
+  return actor;
 };

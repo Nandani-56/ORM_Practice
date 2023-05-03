@@ -1,25 +1,27 @@
 const express = require("express");
+const { Op, or, and } = require("sequelize");
+const db = require("../models");
+
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { Op, or, and } = require("sequelize");
-const model = require("../models");
 
+const student = db.student;
+const task = db.task;
 
-
-// API to fetch data in one-to-many relationship
+// API to fetch data in one-to-many relationship   done
 const oneToManyRead = async (req, res) => {
   try {
-    let data = await model.Student.findAll({
-      attributes: ["firstName", "age", "contactNumber", "id","lastName"],
+    let data = await student.findAll({
+      attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
       include: {
-        model: model.Task,
+        model: task,
         required: true,
         attributes: ["title"],
       },
     });
-    // console.log(data[0].Tasks);
-    // res.render("datatable.ejs",{data:data})
+
     res.json(data);
   } catch (err) {
     console.log(err);
@@ -27,12 +29,11 @@ const oneToManyRead = async (req, res) => {
   }
 };
 
-// API to insert data in one-to-many relationship
+// API to insert data in one-to-many relationship  done
 const oneToManyInsert = async (req, res) => {
   try {
-    await model.Task.create({
-      ...req.body,
-      userId : req.params.id
+    await student.create(req.body, {
+      include: [{ model: task }],
     });
     res.json("Inserted!");
   } catch (err) {
@@ -41,22 +42,23 @@ const oneToManyInsert = async (req, res) => {
   }
 };
 
-
-// API tp update data in one-to-many relationship
+// API tp update data in one-to-many relationship  pending
 const oneToManyUpdate = async (req, res) => {
   try {
-    await model.Student.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    }).then(async () => {
-      await model.Task.update(req.body, {
+    await student
+      .update(req.body, {
         where: {
-          userId: req.params.id,
-          id: 1,
+          id: req.params.id,
         },
+      })
+      .then(async () => {
+        await task.update(req.body, {
+          where: {
+            userId: req.params.id,
+            id: 1,
+          },
+        });
       });
-    });
 
     res.json("Updated!!");
   } catch (err) {
@@ -65,20 +67,22 @@ const oneToManyUpdate = async (req, res) => {
   }
 };
 
-// API to delete data in one-to-one relationship
+// API to delete data in one-to-one relationship  pending
 const oneToManyDelete = async (req, res) => {
   try {
-    await model.Student.destroy({
-      where: {
-        id: req.params.id,
-      },
-    }).then(async () => {
-      await model.Task.destroy({
+    await student
+      .destroy({
         where: {
-          UserId: req.params.id,
+          id: req.params.id,
         },
+      })
+      .then(async () => {
+        await task.destroy({
+          where: {
+            UserId: req.params.id,
+          },
+        });
       });
-    });
     res.json("Deleted");
   } catch (err) {
     console.log(err);
@@ -92,11 +96,3 @@ module.exports = {
   oneToManyUpdate,
   oneToManyDelete,
 };
-
-
-
-
-
-
-
-

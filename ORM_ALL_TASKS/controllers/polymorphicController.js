@@ -1,15 +1,22 @@
 const express = require("express");
+const { Op, or, and } = require("sequelize");
+const db = require("../models");
+
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { Op, or, and } = require("sequelize");
-const model = require("../models");
+
+const image = db.image;
+const video = db.video;
+const comment = db.comment;
+
 
 // API to insert data into images table
 const polymorphicInsert = async (req, res) => {
   if (req.params.modelName == "image") {
     try {
-      await model.image.create(req.body);
+      await image.create(req.body);
       res.json("inserted!!");
     } catch (err) {
       console.log(err);
@@ -19,7 +26,7 @@ const polymorphicInsert = async (req, res) => {
 
   if (req.params.modelName == "video") {
     try {
-      await model.video.create(req.body);
+      await video.create(req.body);
       res.json("inserted!!");
     } catch (err) {
       console.log(err);

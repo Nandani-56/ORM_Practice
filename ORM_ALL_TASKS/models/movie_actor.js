@@ -2,18 +2,18 @@ const { Sequelize, Op } = require("sequelize");
 ("use strict");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Movie_Actor extends Model {
+  class movie_actor extends Model {
     static associate(models) {
-      Movie_Actor.belongsTo(models.Actor, {
+      movie_actor.belongsTo(models.actor, {
         foreignKey: "actorId",
       });
 
-      Movie_Actor.belongsTo(models.Movie, {
+      movie_actor.belongsTo(models.movie, {
         foreignKey: "movieId",
       });
     }
   }
-  Movie_Actor.init(
+  movie_actor.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
     {
       sequelize,
-      modelName: "Movie_Actor",
+      modelName: "movie_actor",
       paranoid: true,
       timestamps: true,
 
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   // 2nd way to add scope
-  Movie_Actor.addScope("scope1", {
+  movie_actor.addScope("scope1", {
     where: {
       actorId: {
         [Op.gte]: 3,
@@ -62,5 +62,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return Movie_Actor;
+  return movie_actor;
 };

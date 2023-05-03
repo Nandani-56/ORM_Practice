@@ -1,29 +1,28 @@
 const { Sequelize, Op } = require("sequelize");
-"use strict";
+("use strict");
 const { Model } = require("sequelize");
-const movie_actor = require("./movie_actor");
+
 module.exports = (sequelize, DataTypes) => {
-  class Movie extends Model {
+  class movie extends Model {
     static associate(models) {
       // define association here
-      Movie.belongsToMany(models.Actor, {
-        through: models.Movie_Actor,
+      movie.belongsToMany(models.actor, {
+        through: models.movie_actor,
         foreignKey: "movieId",
       });
     }
   }
-  Movie.init(
+  movie.init(
     {
       movieName: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Movie",
+      modelName: "movie",
       paranoid: true,
       timestamps: true,
     }
   );
 
-  
-  return Movie;
+  return movie;
 };

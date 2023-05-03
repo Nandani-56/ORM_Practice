@@ -1,10 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Capital extends Model {
+  class capital extends Model {
     static associate(models) {
       // define association here
-      Capital.belongsTo(models.Country, {
+      capital.belongsTo(models.country, {
         foreignKey: "countryId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
@@ -12,17 +12,17 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Capital.init(
+  capital.init(
     {
       capitalName: DataTypes.STRING,
       countryId: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Capital",
+      modelName: "capital",
       // paranoid: true,
       timestamps: true,
     }
   );
-  return Capital;
+  return capital;
 };

@@ -1,9 +1,14 @@
 const express = require("express");
+const { Op, or, and } = require("sequelize");
+const db = require("../models");
+
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { Op, or, and } = require("sequelize");
-const model = require("../models");
+
+const task = db.task;
+const student = db.student;
 
 // Render table using ejs
 const render = async (req, res) => {
@@ -24,8 +29,8 @@ const getData = async (req, res) => {
 
     let sort_order;
 
-    if (sortBy.split(".")[0] == "Student") {
-      sort_order = [["Student", sortBy.split(".")[1], order]];
+    if (sortBy.split(".")[0] == "student") {
+      sort_order = [["student", sortBy.split(".")[1], order]];
     } else {
       sort_order = [[sortBy, order]];
     }
@@ -38,27 +43,26 @@ const getData = async (req, res) => {
     const search = req.query.search["value"];
     const where = {};
 
-    
     // "$Student.firstName$" --> This syntax is used to search in the child table
     if (search) {
       where[Op.or] = [
         {
-          "$Student.firstName$": {
+          "$student.firstName$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          "$Student.lastName$": {
+          "$student.lastName$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          "$Student.age$": {
+          "$student.age$": {
             [Op.like]: `%${search}%`,
           },
         },
         {
-          "$Student.contactNumber$": {
+          "$student.contactNumber$": {
             [Op.like]: `%${search}%`,
           },
         },
@@ -70,14 +74,14 @@ const getData = async (req, res) => {
       ];
     }
 
-    const { count, rows } = await model.Task.findAndCountAll({
+    const { count, rows } = await task.findAndCountAll({
       attributes: ["title"],
       limit: limit ? limit : null,
       offset: start ? start : null,
       order: sort_order,
       where: search ? where : null,
       include: {
-        model: model.Student,
+        model: student,
         required: true,
         attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
       },
@@ -87,7 +91,7 @@ const getData = async (req, res) => {
     console.log(count, "count");
 
     // To return count of total rows
-    const totalCount = await model.Student.count({
+    const totalCount = await student.count({
       include: {
         model: model.Task,
         required: true,

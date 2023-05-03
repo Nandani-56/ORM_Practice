@@ -1,21 +1,32 @@
 const express = require("express");
+const { Op, or, and, where } = require("sequelize");
+const db = require("../models");
+
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { Op, or, and } = require("sequelize");
-const model = require("../models");
 
-// API to insert data in one-to-one relationship
+const country = db.country;
+const capital = db.capital;
+
+// API to insert data in one-to-one relationship   done
 const oneToOneInsert = async (req, res) => {
   try {
-    let data = await model.Country.create(req.body);
-
-    if (data) {
-      await model.Capital.create({
-        capitalName: req.body.capitalName,
-        countryId: data.id,
-      });
-    }
+    await country.create(
+      {
+        ...req.body,
+        capital: [
+          {
+            ...req.body,
+            countryId: country.id,
+          },
+        ],
+      },
+      {
+        include: [{ model: capital }],
+      }
+    );
     res.json("inserted");
   } catch (err) {
     console.log(err);
@@ -23,18 +34,17 @@ const oneToOneInsert = async (req, res) => {
   }
 };
 
-// API to read data in one to one relationship
+// API to read data in one to one relationship   done
 const oneToOneRead = async (req, res) => {
   try {
-    let data = await model.Country.findAll({
+    let data = await country.findAll({
       attributes: ["countryName"],
       include: {
-        model: model.Capital,
+        model: capital,
         required: true,
         attributes: ["capitalName"],
       },
     });
-
     res.json(data);
   } catch (err) {
     console.log(err);
@@ -42,21 +52,14 @@ const oneToOneRead = async (req, res) => {
   }
 };
 
-// API to update data in one-to-one relationship
+// API to update data in one-to-one relationship   pending
 const oneToOneUpdate = async (req, res) => {
-  console.log(req.body.countryName);
-  console.log(req.body.capitalName);
   try {
-    await model.Country.update(req.body, {
+    await country.update(req.body, {
       where: {
         id: req.params.id,
       },
-    });
-
-    await model.Capital.update(req.body, {
-      where: {
-        countryId: req.params.id,
-      },
+      include: [{ model: capital }, { where: { countryId: req.params.id } }],
     });
 
     res.json("updated");
@@ -66,10 +69,10 @@ const oneToOneUpdate = async (req, res) => {
   }
 };
 
-// API to delete data in one to one relationship
+// API to delete data in one to one relationship  done
 const oneToOneDelete = async (req, res) => {
   try {
-    await model.Country.destroy({
+    await country.destroy({
       where: {
         id: req.params.id,
       },
