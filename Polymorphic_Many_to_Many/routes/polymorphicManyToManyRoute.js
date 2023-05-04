@@ -6,7 +6,7 @@ const polymorphicManyToMany = require("../controllers/polymorphicManyToManyContr
 route.post('/user',polymorphicManyToMany.insertUser);
 
 // API to insert post and comment
-route.post('/:actionType/:mediaType',polymorphicManyToMany.insertData)
+route.post('/insertpolymany',polymorphicManyToMany.insertData)
 
 // API to read post comment
 route.get('/postData',polymorphicManyToMany.seePost)

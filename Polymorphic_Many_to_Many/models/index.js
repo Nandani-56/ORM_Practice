@@ -21,6 +21,7 @@ if (config.use_env_variable) {
   );
 }
 
+
 sequelize
   .authenticate()
   .then(() => {
@@ -30,6 +31,7 @@ sequelize
     console.log(err);
   });
 
+  
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (
