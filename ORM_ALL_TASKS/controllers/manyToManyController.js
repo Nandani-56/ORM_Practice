@@ -32,7 +32,7 @@ const insertData = async (req, res) => {
 
   // if (actorlist) {
   await movie.create({
-    movieName: "ABsCDze",
+    movieName: "Student of the year 2",
     createdAt: "2023-05-03T09:39:13.000Z",
     updatedAt: "2023-05-03T09:55:26.000Z",
     deletedAt: null,
