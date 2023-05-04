@@ -26,19 +26,18 @@ module.exports = (sequelize, DataTypes) => {
 
   //Model based hooks
 
-   comment.beforeCreate(comment=>{
+  comment.beforeCreate((comment) => {
     // comment.user_id = 3,
-    comment.post_id = 9,
-    console.log("Before Create Comment");
-   })
+    (comment.post_id = 9), console.log("Before Create Comment");
+  });
 
   // Global Hook
   sequelize.addHook("beforeCreate", (comment) => {
     comment.user_id = 3;
   });
 
-  sequelize.addHook("afterFind",()=>{
+  sequelize.addHook("afterFind", () => {
     console.log("Data Found!");
-  })
+  });
   return comment;
 };

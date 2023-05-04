@@ -24,6 +24,16 @@ const insertUser = async (req, res) => {
   }
 };
 
+// const insertPost = async (req, res) => {
+//   try {
+//     const posts = await post.create(req.body);
+//     await posts.addBasic_media()
+//   } catch (err) {
+//     console.log(err);
+//     res.json("err");
+//   }
+// };
+
 const insertData = async (req, res) => {
   try {
     await db.sequelize.transaction(async (t) => {

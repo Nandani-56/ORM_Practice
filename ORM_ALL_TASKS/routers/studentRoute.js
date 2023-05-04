@@ -2,6 +2,7 @@ const express = require("express");
 const route = express.Router();
 const studentRoute = require("../controllers/studentController");
 const datatable = require("../controllers/datatableController");
+const validation = require("../middleware/validation");
 
 // API to get all data
 route.get("/displayStudentData", studentRoute.displayData);
@@ -13,7 +14,7 @@ route.get("/display", datatable.render);
 route.get("/getData", datatable.getData);
 
 // API to insert data
-route.post("/insertStudentData", studentRoute.insert);
+route.post("/insertStudentData", (validation.validateStudent), studentRoute.insert);
 
 // API to update data
 route.put("/updateStudentData/:id", studentRoute.updateData);

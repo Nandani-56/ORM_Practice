@@ -4,8 +4,9 @@ const route = express.Router();
 const manyToManyRoute = require("../controllers/manyToManyController");
 
 // API to insert data
-route.post("/insert",manyToManyRoute.insertData);
+route.post("/insertMovie",manyToManyRoute.insertMovieData);
 
+route.post("/insertActor",manyToManyRoute.insertActorData);
 // API to read data
 route.get("/actor-movie-read", manyToManyRoute.actorMovieRead);
 
