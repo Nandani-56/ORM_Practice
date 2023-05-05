@@ -1,6 +1,13 @@
 const express = require("express");
 const { Op, or, and } = require("sequelize");
 const db = require("../models");
+const {
+  setModel,
+  getModel,
+  displayData: displaySData,
+  displaySingleData,
+  insertData,
+} = require("../repositories/studentRepository");
 
 const app = express();
 
@@ -9,26 +16,22 @@ app.use(express.urlencoded({ extended: true }));
 
 const student = db.student;
 
+setModel(student);
+
 // API to get all the records
 const displayData = async (req, res) => {
-  try {
-    let studentData = await student.findAll({});
-    return res.json(studentData);
-  } catch (err) {
-    console.log(err);
-    res.status(404).json("Some error occured!");
-  }
+  const displayStudentData = await displaySData();
+  return res.json(displayStudentData);
+
+  // const name = "Nandani";
+  // const dsd = await displaySingleData(name);
+  // return res.json(dsd);
 };
 
 // API to insert data
 const insert = async (req, res) => {
-  try {
-    await student.create(req.body);
-    res.status(200).json("inserted!");
-  } catch (err) {
-    console.log(err);
-    res.status(404).json("err");
-  }
+  await insertData(req.body);
+  return res.json("Inserted!");
 };
 
 // API to delete data
