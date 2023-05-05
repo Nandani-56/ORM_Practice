@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
-app.set('view engine','ejs');
+app.set("view engine", "ejs");
 
 app.use(
   cors({
@@ -13,24 +15,58 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const studentData = require("./routers/studentRoute");
+app.use("/", studentData);
 
-const studentData = require('./routers/studentRoute');
-app.use('/',studentData);
+const oneToOne = require("./routers/oneToOneRoute");
+app.use("/", oneToOne);
 
-const oneToOne = require('./routers/oneToOneRoute');
-app.use('/',oneToOne);
+const oneToMany = require("./routers/oneToManyRoute");
+app.use("/", oneToMany);
 
-const oneToMany = require('./routers/oneToManyRoute');
-app.use('/',oneToMany);
+const manyToMany = require("./routers/manyToManyRoute");
+app.use("/", manyToMany);
 
-const manyToMany = require('./routers/manyToManyRoute');
-app.use('/',manyToMany);
+const polymorphic = require("./routers/polymorphicRoute");
+app.use("/", polymorphic);
 
-const polymorphic = require('./routers/polymorphicRoute');
-app.use('/',polymorphic);
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "Instagram API ",
+  },
+  servers: [
+    {
+      url: "http://localhost:8080/",
+      description: "Development server",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+};
 
+const options = {
+  swaggerDefinition,
+  apis: ["./swaggerDoc/*.js"],
+};
 
-const PORT = process.env.PORT || 8080;
+const specs = swaggerJsdoc(options);
+app.use("/", swaggerUi.serve, swaggerUi.setup(specs));
+
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+

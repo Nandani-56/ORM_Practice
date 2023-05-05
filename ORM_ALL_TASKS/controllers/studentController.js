@@ -30,8 +30,13 @@ const displayData = async (req, res) => {
 
 // API to insert data
 const insert = async (req, res) => {
-  await insertData(req.body);
-  return res.json("Inserted!");
+  console.log(req.body);
+  const data = await insertData(req.body);
+  return res.json({
+    responseCode: 200,
+    responseMessage: "sucess",
+    responseData: { loginToken: data },
+  });
 };
 
 // API to delete data

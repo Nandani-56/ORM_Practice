@@ -14,7 +14,12 @@ route.get("/display", datatable.render);
 route.get("/getData", datatable.getData);
 
 // API to insert data
-route.post("/insertStudentData", (validation.validateStudent), studentRoute.insert);
+route.post(
+  "/insertStudentData",
+  // validation.validateStudent,
+  studentRoute.insert
+  
+);
 
 // API to update data
 route.put("/updateStudentData/:id", studentRoute.updateData);

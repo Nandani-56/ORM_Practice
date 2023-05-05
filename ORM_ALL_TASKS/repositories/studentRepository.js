@@ -4,7 +4,7 @@ const setModel = (model) => {
   this.model = model;
 };
 
-const getModel = () => {
+const getModel = (model) => {
   return this.model;
 };
 
@@ -51,5 +51,3 @@ module.exports = {
       });
   },
 };
-
-
