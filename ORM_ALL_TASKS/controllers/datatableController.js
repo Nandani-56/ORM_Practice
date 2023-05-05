@@ -1,6 +1,7 @@
 const express = require("express");
 const { Op, or, and } = require("sequelize");
 const db = require("../models");
+const repositoryData = require("../repositories/datatableRepository");
 
 const app = express();
 
@@ -18,8 +19,6 @@ const render = async (req, res) => {
 // Pagination , sorting , searching , All Records
 const getData = async (req, res) => {
   try {
-    console.log(req.query);
-
     // sorting
     var column_index = req.query.order[0].column;
     var sortBy = req.query.columns[column_index]["data"];
@@ -35,68 +34,27 @@ const getData = async (req, res) => {
       sort_order = [[sortBy, order]];
     }
 
+    console.log(sort_order);
+
+    // searching
+    const search = req.query.search["value"];
+
     // pagination
     const limit = Number(req.query.length);
     const start = Number(req.query.start);
 
-    // searching
-    const search = req.query.search["value"];
-    const where = {};
+    repositoryData.setModel(task);
 
-    // "$Student.firstName$" --> This syntax is used to search in the child table
-    if (search) {
-      where[Op.or] = [
-        {
-          "$student.firstName$": {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        {
-          "$student.lastName$": {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        {
-          "$student.age$": {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        {
-          "$student.contactNumber$": {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        {
-          title: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-      ];
-    }
+    const { count, rows } = await repositoryData.fetchData(
+      sort_order,
+      limit,
+      start,
+      student,
+      search,
+      true
+    );
 
-    const { count, rows } = await task.findAndCountAll({
-      attributes: ["title"],
-      limit: limit ? limit : null,
-      offset: start ? start : null,
-      order: sort_order,
-      where: search ? where : null,
-      include: {
-        model: student,
-        required: true,
-        attributes: ["firstName", "age", "contactNumber", "id", "lastName"],
-      },
-    });
-
-    //To return count of filtered rows
-    console.log(count, "count");
-
-    // To return count of total rows
-    const totalCount = await student.count({
-      include: {
-        model: model.Task,
-        required: true,
-      },
-    });
+    const totalCount = await repositoryData.fetchCount(student, true);
 
     return res.json({
       recordsTotal: totalCount,

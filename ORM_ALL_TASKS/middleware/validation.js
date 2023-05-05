@@ -2,10 +2,17 @@ const joi = require("joi");
 
 const validateStudent = async (req, res, next) => {
   const createSchema = await joi.object().keys({
-    firstName: joi.string().required().messages({"any.required":"FirstName Required!"}),
+    firstName: joi
+      .string()
+      .required()
+      .messages({ "any.required": "FirstName Required!" }),
     lastName: joi.string().required(),
-    age: joi.number().required().messages({"any.required":"Age Required!"}),  
-    contactNumber : joi.string().regex(/^[0-9]{10}$/).messages({'string.pattern.base': `Phone number must have 10 digits.`}).required()
+    age: joi.number().required().messages({ "any.required": "Age Required!" }),
+    contactNumber: joi
+      .string()
+      .regex(/^[0-9]{10}$/)
+      .messages({ "string.pattern.base": `Phone number must have 10 digits.` })
+      .required(),
   });
 
   const { error } = createSchema.validate(req.body);
@@ -19,6 +26,3 @@ const validateStudent = async (req, res, next) => {
 };
 
 module.exports = { validateStudent };
-
-
-
