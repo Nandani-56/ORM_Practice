@@ -8,7 +8,6 @@ const {
   updateData,
   updateOptionMaster,
   insertOptionMaster,
-  deleteOptionMaster,
   deleteData,
 } = require("../repository/select_master_repo");
 
