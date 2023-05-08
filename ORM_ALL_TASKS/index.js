@@ -33,28 +33,27 @@ app.use("/", polymorphic);
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Instagram API ",
+    title: "API for performing CRUD operation on Different Table ",
   },
   servers: [
     {
       url: "http://localhost:8080/",
-      description: "Development server",
     },
   ],
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
-      },
-    },
-  },
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+  // components: {
+  //   securitySchemes: {
+  //     bearerAuth: {
+  //       type: "http",
+  //       scheme: "bearer",
+  //       bearerFormat: "JWT",
+  //     },
+  //   },
+  // },
+  // security: [
+  //   {
+  //     bearerAuth: [],
+  //   },
+  // ],
 };
 
 const options = {
@@ -69,4 +68,3 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-

@@ -16,9 +16,8 @@ route.get("/getData", datatable.getData);
 // API to insert data
 route.post(
   "/insertStudentData",
-  // validation.validateStudent,
+  validation.validateStudent,
   studentRoute.insert
-  
 );
 
 // API to update data
@@ -28,7 +27,7 @@ route.put("/updateStudentData/:id", studentRoute.updateData);
 route.delete("/deleteStudentData/:id", studentRoute.deleteData);
 
 // API for pagination
-route.get("/pagination", studentRoute.pagination);
+route.get("/pagination/:no", studentRoute.pagination);
 
 // API for paginationUsingCount
 route.get("/paginationUsingCount/:no", studentRoute.paginationUsingCount);
