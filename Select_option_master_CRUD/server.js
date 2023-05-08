@@ -1,0 +1,44 @@
+const express = require("express");
+const cors = require("cors");
+const app = express();
+
+// const swaggerJsdoc = require("swagger-jsdoc");
+// const swaggerUi = require("swagger-ui-express");
+
+app.set("view engine", "ejs");
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const select_master_route = require("./routes/select_master_route");
+app.use("/", select_master_route);
+
+// const swaggerDefinition = {
+//   openapi: "3.0.0",
+//   info: {
+//     title: "API for performing CRUD operation Select and Option Master ",
+//   },
+//   servers: [
+//     {
+//       url: "http://localhost:8081/",
+//     },
+//   ],
+// };
+
+// const options = {
+//   swaggerDefinition,
+//   apis: ["./swaggerDoc/*.js"],
+// };
+
+// const specs = swaggerJsdoc(options);
+// app.use("/", swaggerUi.serve, swaggerUi.setup(specs));
+
+const PORT = 8082;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
