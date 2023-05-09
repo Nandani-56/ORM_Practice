@@ -1,7 +1,10 @@
 const express = require("express");
 const route = express.Router();
 
-const { validateSelectMaster } = require("../middleware/validation");
+const {
+  validateSelectMaster,
+  validateReadData,
+} = require("../middleware/validation");
 const selectMasterRoute = require("../controller/select_master_controller");
 
 // insert data into select and option master
@@ -12,7 +15,11 @@ route.post(
 );
 
 // read data
-route.get("/readData", selectMasterRoute.readSelectMasterData);
+route.get(
+  "/readData",
+  validateReadData,
+  selectMasterRoute.readSelectMasterData
+);
 
 // update select master
 route.put(

@@ -1,7 +1,6 @@
 const { Op } = require("sequelize");
 const db = require("../models");
 
-
 const setModel = (model) => {
   this.model = model;
 };
@@ -26,21 +25,21 @@ module.exports = {
   },
 
   // Read Data
-  readData: async (id, includeModel) => {
+  readData: async (id, includeModel, parentAttribute, childAttribute) => {
     return await getModel().findAll({
-      // attibutes: parentAttribute,
+      attibutes: [parentAttribute],
       include: {
         model: includeModel,
-        // attibutes: childAttribute,
+        attibutes: childAttribute,
       },
       where: {
-        id: id ? id : 5,  
+        id: id ? id : 7,
       },
     });
   },
 
   // Update select_master Data
-  updateData: async (bodydata,id) => {
+  updateData: async (bodydata, id) => {
     await getModel().update(bodydata, {
       where: {
         id: id,

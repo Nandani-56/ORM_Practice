@@ -24,18 +24,20 @@ const insertSelectMasterData = async (req, res) => {
   setModel(selectMaster);
   let HTMLString = "";
   const data = await insertData(req.body, optionMaster);
-
-  if (data.controllerType == "dropdown") {
+  let s = data.controllerType;
+  let s1 = s.toLowerCase();
+  console.log(s1);
+  if (s1 == "dropdown") {
     HTMLString += `<select> <option selected disabled>Select ${data.name}</option>`;
     for (i = 0; i < data.option_masters.length; i++) {
       HTMLString += ` <option value="${data.option_masters[i].optionValue}"> ${data.option_masters[i].optionValue}</option>`;
     }
     HTMLString += `</select>`;
-  } else if (data.controllerType == "radiobutton") {
+  } else if (s1 == "radiobutton") {
     for (i = 0; i < data.option_masters.length; i++) {
       HTMLString += `<input type = "radio" name="radiobtn">${data.option_masters[i].optionValue} `;
     }
-  } else if (data.controllerType == "checkbox") {
+  } else if (s1 == "checkbox") {
     for (i = 0; i < data.option_masters.length; i++) {
       HTMLString += `<input type = "checkbox" name="radiobtn">${data.option_masters[i].optionValue} `;
     }
@@ -51,9 +53,9 @@ const readSelectMasterData = async (req, res) => {
   setModel(selectMaster);
   const data = await readData(
     req.query.id,
-    optionMaster
-    // parentAttribute,
-    // childAttribute
+    optionMaster,
+    parentAttribute,
+    childAttribute
   );
   // console.log(data[0].option_masters.length);
   return res.json(data);
@@ -69,6 +71,7 @@ const updateSelectMasterData = async (req, res) => {
 // update option master
 const updateOptionMasterData = async (req, res) => {
   setModel(optionMaster);
+  console.log(req.body.length);
   for (i = 0; i < req.body.length; i++) {
     const data = await optionMaster.findByPk(req.body[i].id);
     console.log(data, "data");
