@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const db = require("../models");
-const option_master = db.option_master;
+
 
 const setModel = (model) => {
   this.model = model;
@@ -34,16 +34,16 @@ module.exports = {
         // attibutes: childAttribute,
       },
       where: {
-        id: id ? id : 5,
+        id: id ? id : 5,  
       },
     });
   },
 
   // Update select_master Data
-  updateData: async (bodydata) => {
+  updateData: async (bodydata,id) => {
     await getModel().update(bodydata, {
       where: {
-        id: bodydata.id,
+        id: id,
       },
     });
   },

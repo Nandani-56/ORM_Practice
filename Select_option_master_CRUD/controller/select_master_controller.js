@@ -61,7 +61,8 @@ const readSelectMasterData = async (req, res) => {
 
 // update select master
 const updateSelectMasterData = async (req, res) => {
-  await updateData(req.body);
+  setModel(selectMaster);
+  await updateData(req.body, req.params.id);
   return res.json("updated!!");
 };
 
