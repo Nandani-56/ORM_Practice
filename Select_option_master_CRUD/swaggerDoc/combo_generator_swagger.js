@@ -239,3 +239,65 @@
  *                 responseMessage:
  *                    type: string
  */
+
+// update option master
+
+/**
+ * @swagger
+ * /updateOptionMasterData:
+ *   put:
+ *     summary: update option master data
+ *     tags: [Select Master / Option Master]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        default: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               option_masters:
+ *                 type: string
+ *                 example: gender
+ *               controllerType:
+ *                 type: string
+ *                 example: dropdown
+ *               allowMultiple:
+ *                 type: boolean
+ *                 example: false
+ *     responses:
+ *       200:
+ *         description: select master data updated sucessfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                    type: string
+ *                    example: select master data updated sucessfully
+ *                 responseData:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 1
+ *       500:
+ *         description: select master data updation failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responsecode:
+ *                   type: integer
+ *                 responseMessage:
+ *                    type: string
+ */
