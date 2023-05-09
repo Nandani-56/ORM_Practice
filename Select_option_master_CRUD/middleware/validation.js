@@ -1,4 +1,5 @@
 const { query } = require("express");
+const { options } = require("joi");
 const joi = require("joi");
 
 const validateSelectMaster = async (req, res, next) => {
@@ -55,8 +56,8 @@ const validateReadData = async (req, res, next) => {
     id: joi.number().required(),
   });
 
-  const { errors } = readSchema.validate(req.query);
-
+  const { errors } = readSchema.validate(options);
+joi.validate()
   if (errors) {
     res.status(404).json({ error: errors.message });
   } else {
@@ -64,7 +65,6 @@ const validateReadData = async (req, res, next) => {
   }
 };
 module.exports = { validateSelectMaster, validateReadData };
-
 
 /*
 09-05-2023
