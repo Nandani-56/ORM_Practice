@@ -64,3 +64,20 @@ const validateReadData = async (req, res, next) => {
   }
 };
 module.exports = { validateSelectMaster, validateReadData };
+
+
+/*
+09-05-2023
+
+Technology : NodeJS
+
+*Tasks*
+Implemented Joi validation on select master and option master
+Created Swagger Documentation for API 
+
+*Learnings*
+Read about joi validation 
+How to validate a query string using joi validation
+How to create swagger documentation for API 
+
+*/
