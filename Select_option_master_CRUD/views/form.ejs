@@ -5,24 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generate Combo</title>
-    
+   
 </head>
 <body>
-  <h1>Create Form</h1> 
-    <form action="/insertData" method="post" >
+    <h1>Create Form</h1>
+    <form action="/insertMultipleData" method="post" >
         <table>
             <tr>
-                <td ><label for="name">Combo Name:</label>
+                <td ><label for="cname">Combo Name:</label>
                 <input type="text" id="cname" name="name">
                 </td>
            
-                <td><label for="selection">Select Type</label>
+                <td  id="align"><label for="selection">Select Type</label>
                     <select name="controllerType" id="type_menu">
-                      
+                       
                         <option value="dropdown">Dropdown</option>
                         <option value="checkbox">Check-box</option>
                         <option value="radiobutton">Radio-button</option>
                        
+                    </select>
                 </td>
                 <td ><input class="btn-style" type="button" value="Add Option" onclick="addOption()"></input></td>
 
@@ -64,10 +65,10 @@ function addCombo() {
 
                 <td id="align"><label for="selection">Select Type</label>
                     <select name="controllerType" id="type_menu">
-                       
+                      
                         <option value="dropdown">Dropdown</option>
                         <option value="checkbox">Check-box</option>
-                        <option value="radio">Radio-button</option>
+                        <option value="radiobutton">Radio-button</option>
                        
                     </select>
                 </td>
@@ -78,7 +79,6 @@ function addCombo() {
                         <div id="option_${count}"></div>
                     </td>
                 </tr>`
-       console.log(count,"::;");
         let options = document.createElement("div");
         options.className = "custom"
         options.innerHTML = data;
@@ -92,7 +92,7 @@ function addmoreOption(id) {
     info +=` 
     <tr>
       <td><label for="optname">Option Name: </label></td>
-      <td><input type="text" id="optname" name="optionValue" /></td>
+      <td><input type="text" id="optname" name="optname_${count}" /></td>
     </tr>`
     let options = document.createElement("div");
     options.className = "custom"
@@ -106,7 +106,7 @@ function addOption() {
     info +=` 
     <tr>
       <td><label for="optname">Option Name: </label></td>
-      <td><input type="text" id="optname_1" name="optionValue" /></td>
+      <td><input type="text" id="optname_1" name="optname_1" /></td>
     </tr>`
     let options = document.createElement("div");
     options.className = "custom"
