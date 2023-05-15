@@ -23,6 +23,7 @@ const optionMaster = db.option_master;
 const insertSelectMasterData = async (req, res) => {
   setModel(selectMaster);
   let HTMLString = "";
+  console.log(req.body);
   const data = await insertData(req.body, optionMaster);
   let s = data.controllerType;
   let s1 = s.toLowerCase();

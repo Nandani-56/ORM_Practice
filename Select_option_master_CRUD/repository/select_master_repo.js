@@ -15,6 +15,7 @@ module.exports = {
 
   // Insert data into select and option master
   insertData: async (data, includeModel) => {
+    console.log(getModel());
     return await getModel().create(data, {
       include: [
         {
