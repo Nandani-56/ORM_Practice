@@ -12,7 +12,7 @@ const form = db.form;
 const form_detail = db.form_detail;
 
 const renderForm = async (req, res) => {
-  res.render("form.ejs");
+  res.render("form1.ejs");
 };
 
 module.exports = {

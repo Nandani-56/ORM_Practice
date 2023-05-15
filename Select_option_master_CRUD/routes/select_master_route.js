@@ -10,7 +10,7 @@ const selectMasterRoute = require("../controller/select_master_controller");
 // insert data into select and option master
 route.post(
   "/insertData",
-  validateSelectMaster,
+
   selectMasterRoute.insertSelectMasterData
 );
 

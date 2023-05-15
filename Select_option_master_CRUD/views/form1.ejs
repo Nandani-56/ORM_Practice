@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <h1>Create Form</h1>
+    <form action="" method="post">
+      <div>
+        <table id="dynamicFormTable">
+          <tr>
+            <td>Enter Form Name :</td>
+            <td><input type="text" name="formName" id="formName" /></td>
+          </tr>
+          <tr>
+            <th>Enter Field Name :</th>
+            <td><input type="text" name="name" id="fieldName" /></td>
+            <th>Select Controller Type</th>
+            <td>
+              <select name="controllerType" id="controllerType">
+                <option value="dropdown">Dropdown</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="radiobutton">Radiobutton</option>
+              </select>
+            </td>
+            <td><p id="1" onclick="addOption(this.id)">Add Options</p></td>
+          </tr>
+          <tr id="addOption1"></tr>
+          <tr id="addField"></tr>
+          <tr>
+            <td><p onclick="addField()">Add Field</p></td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </body>
+
+  <script>
+    let id = 2;
+    function addOption(id) {
+      let data = "";
+      optionId = "addOption" + id;
+      let option = document.getElementById(optionId);
+      data += `<tr> <td>Enter Option Value :</td> 
+      <td><input type="text" name="optionValue" id="optionValue" /></td></tr>`;
+
+      let options = document.createElement("div");
+      options.innerHTML = data;
+      option.appendChild(options);
+    }
+
+    function addField() {
+      let data = "";
+      let field = document.getElementById("addField");
+      data += `<tr>
+            <th>Enter Field Name :</th>
+            <td><input type="text" name="name" id="fieldName" /></td>
+            <th>Select Controller Type</th>
+            <td>
+              <select name="controllerType" id="controllerType">
+                <option value="dropdown">Dropdown</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="radiobutton">Radiobutton</option>
+              </select>
+            </td>
+            <td><p id="${id}" onclick="addOption(this.id)">Add Options</p></td>
+         </tr>
+          <tr id="addOption${id++}"></tr>`;
+
+      let options = document.createElement("div");
+      options.innerHTML = data;
+      field.appendChild(options);
+    }
+  </script>
+</html>
+
+<!-- 
+
+  15-05-2023
+
+  Technology : NodeJS 
+
+  *TASKS*
+  Completed Previous Tasks (Google Form type Form)
+
+  *Learnings*
+  Learned Typescript
+  Learned Basics of NestJS
+
+
+ -->

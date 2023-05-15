@@ -21,25 +21,25 @@ const validateSelectMaster = async (req, res, next) => {
       //   .boolean()
       //   .required()
       //   .messages({ "any.required": "allowMultiple Required!!!" }),
-      option_masters: joi.array().items(
-        joi
-          .object({
-            optionKey: joi
-              .string()
-              .required()
-              .messages({ "any.required": "optionKey Required!!!" }),
-            selectId: joi
-              .number()
-              .required()
-              .messages({ "any.required": "selectId Required!!!" }),
-            // optionValue: joi
-            //   .string()
-            //   .required()
-            //   .messages({ "any.required": "optionValue Required!!!" }),
-          })
-          .required()
-          .min(1)
-      ),
+      // option_masters: joi.array().items(
+      //   joi
+      //     .object({
+      //       optionKey: joi
+      //         .string()
+      //         .required()
+      //         .messages({ "any.required": "optionKey Required!!!" }),
+      //       selectId: joi
+      //         .number()
+      //         .required()
+      //         .messages({ "any.required": "selectId Required!!!" }),
+      //       // optionValue: joi
+      //       //   .string()
+      //       //   .required()
+      //       //   .messages({ "any.required": "optionValue Required!!!" }),
+      //     })
+      //     .required()
+      //     .min(1)
+      // ),
     });
 
   const { error } = insertSchema.validate(req.body);
